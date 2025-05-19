@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-processing-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: video-processing-service
+  template:
+    metadata:
+      labels:
+        app: video-processing-service
+    spec:
+      containers:
+        - name: video-processing-service
+          image: akshatadocker07/video_processing_service:latest
+          ports:
+            - containerPort: 5002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: video-processing-service
+spec:
+  selector:
+    app: video-processing-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5002
+  type: LoadBalancer
